@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "@ui/styles/globals.css";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Analytics } from "@vercel/analytics/react";
 import { ClerkProvider } from "@clerk/nextjs";
