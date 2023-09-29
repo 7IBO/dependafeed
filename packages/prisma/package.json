@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "prisma",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -8,9 +8,11 @@
     "db:push": "prisma db push --skip-generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.2.0"
+    "@prisma/client": "^5.3.1",
+    "zod": "^3.22.2",
+    "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
-    "prisma": "^5.2.0"
+    "prisma": "^5.3.1"
   }
 }
