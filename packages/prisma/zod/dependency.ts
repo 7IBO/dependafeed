@@ -1,11 +1,14 @@
 import * as z from "zod"
+import { DependencyType } from "@prisma/client"
 import { CompleteDependencyFile, RelatedDependencyFileModel, CompletePackage, RelatedPackageModel, CompletePackageVersion, RelatedPackageVersionModel } from "./index"
 
 export const DependencyModel = z.object({
   id: z.string(),
   fileId: z.string(),
   packageId: z.string(),
-  versionId: z.string(),
+  versionId: z.string().nullish(),
+  semverNumber: z.string(),
+  type: z.nativeEnum(DependencyType),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
@@ -13,7 +16,7 @@ export const DependencyModel = z.object({
 export interface CompleteDependency extends z.infer<typeof DependencyModel> {
   file: CompleteDependencyFile
   package: CompletePackage
-  version: CompletePackageVersion
+  version?: CompletePackageVersion | null
 }
 
 /**
@@ -24,5 +27,5 @@ export interface CompleteDependency extends z.infer<typeof DependencyModel> {
 export const RelatedDependencyModel: z.ZodSchema<CompleteDependency> = z.lazy(() => DependencyModel.extend({
   file: RelatedDependencyFileModel,
   package: RelatedPackageModel,
-  version: RelatedPackageVersionModel,
+  version: RelatedPackageVersionModel.nullish(),
 }))

@@ -4,8 +4,9 @@ import { CompleteDependency, RelatedDependencyModel, CompletePackageVersion, Rel
 export const PackageModel = z.object({
   id: z.string(),
   name: z.string(),
-  latestCheckDate: z.date(),
-  latestUpdateDate: z.date(),
+  description: z.string(),
+  latestCheckDate: z.date().nullish(),
+  latestUpdateDate: z.date().nullish(),
   githubLink: z.string().nullish(),
   homeLink: z.string().nullish(),
   createdAt: z.date(),
@@ -13,7 +14,7 @@ export const PackageModel = z.object({
 })
 
 export interface CompletePackage extends z.infer<typeof PackageModel> {
-  dependencies: CompleteDependency[]
+  packageDependencies: CompleteDependency[]
   versions: CompletePackageVersion[]
 }
 
@@ -23,6 +24,6 @@ export interface CompletePackage extends z.infer<typeof PackageModel> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const RelatedPackageModel: z.ZodSchema<CompletePackage> = z.lazy(() => PackageModel.extend({
-  dependencies: RelatedDependencyModel.array(),
+  packageDependencies: RelatedDependencyModel.array(),
   versions: RelatedPackageVersionModel.array(),
 }))

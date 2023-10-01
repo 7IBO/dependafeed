@@ -7,8 +7,10 @@ export const RepositoryModel = z.object({
   fullName: z.string(),
   ownerLogin: z.string(),
   isMonorepo: z.boolean(),
-  isIndexed: z.boolean(),
-  isPublic: z.boolean(),
+  isIndexed: z.boolean().nullish(),
+  isPublic: z.boolean().nullish(),
+  latestCheckDate: z.date().nullish(),
+  latestUpdateDate: z.date().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

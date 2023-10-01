@@ -54,13 +54,16 @@ model RepositoryAccess {
 }
 
 model Repository {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   name       String
   fullName   String
   ownerLogin String
-  isMonorepo Boolean @default(false)
-  isIndexed  Boolean
-  isPublic   Boolean
+  isMonorepo Boolean  @default(false)
+  isIndexed  Boolean?
+  isPublic   Boolean?
+
+  latestCheckDate  DateTime?
+  latestUpdateDate DateTime?
 
   userAccesses    RepositoryAccess[]
   dependencyFiles DependencyFile[]
@@ -72,9 +75,9 @@ model Repository {
 }
 
 model DependencyFile {
-  id   String  @id @default(cuid())
-  name String  @default("package.json")
-  path String?
+  id   String @id @default(cuid())
+  name String
+  path String
 
   repositoryId String
   repository   Repository @relation(fields: [repositoryId], references: [id])
@@ -87,14 +90,23 @@ model DependencyFile {
   @@index([repositoryId])
 }
 
+enum DependencyType {
+  DEPENDENCY
+  DEV_DEPENDENCY
+  PEER_DEPENDENCY
+  BUNDLE_DEPENDENCY
+}
+
 model Dependency {
-  id        String         @id @default(cuid())
-  fileId    String
-  file      DependencyFile @relation(fields: [fileId], references: [id])
-  packageId String
-  package   Package        @relation(fields: [packageId], references: [id])
-  versionId String
-  version   PackageVersion @relation(fields: [versionId], references: [id])
+  id           String          @id @default(cuid())
+  fileId       String
+  file         DependencyFile  @relation(fields: [fileId], references: [id])
+  packageId    String
+  package      Package         @relation(fields: [packageId], references: [id])
+  versionId    String?
+  version      PackageVersion? @relation(fields: [versionId], references: [id])
+  semverNumber String
+  type         DependencyType  @default(DEPENDENCY)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -105,17 +117,18 @@ model Dependency {
 }
 
 model Package {
-  id   String @id @default(cuid())
-  name String
+  id          String @id @default(cuid())
+  name        String @unique
+  description String @default("")
 
-  latestCheckDate  DateTime
-  latestUpdateDate DateTime
+  latestCheckDate  DateTime?
+  latestUpdateDate DateTime?
 
   githubLink String?
   homeLink   String?
 
-  dependencies Dependency[]
-  versions     PackageVersion[]
+  packageDependencies Dependency[]
+  versions            PackageVersion[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -124,20 +137,24 @@ model Package {
 model PackageVersion {
   id      String @id @default(cuid())
   name    String
-  details String
+  details String @default("")
+
+  latestCheckDate  DateTime?
+  latestUpdateDate DateTime?
 
   packageId String
   package   Package @relation(fields: [packageId], references: [id])
 
-  isLatestVersion Boolean
+  isLatestVersion Boolean?
 
   githubCommitSha String?
-  releaseDate     DateTime
+  releaseDate     DateTime?
 
-  dependencies Dependency[]
+  packageDependencies Dependency[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
+  @@unique([name, packageId])
   @@index([packageId])
 }

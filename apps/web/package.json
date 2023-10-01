@@ -14,15 +14,21 @@
     "lucide-react": "^0.279.0",
     "next": "^13.5.3",
     "next-themes": "^0.2.1",
+    "octokit": "^3.1.1",
     "prisma": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "ui": "workspace:*"
+    "semver": "^7.5.4",
+    "ui": "workspace:*",
+    "validate-npm-package-name": "^5.0.0",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/node": "^20.7.2",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/semver": "^7.5.3",
+    "@types/validate-npm-package-name": "^4.0.0",
     "autoprefixer": "^10.4.16",
     "eslint-config-custom": "workspace:*",
     "postcss": "^8.4.31",

@@ -4,7 +4,7 @@ import { CompleteRepository, RelatedRepositoryModel, CompleteDependency, Related
 export const DependencyFileModel = z.object({
   id: z.string(),
   name: z.string(),
-  path: z.string().nullish(),
+  path: z.string(),
   repositoryId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
